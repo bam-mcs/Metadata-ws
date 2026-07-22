@@ -44,6 +44,17 @@ vl.getVariable("test_var")
 
 # CELL ********************
 
+print("Hi")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
 
 # METADATA ********************
 
