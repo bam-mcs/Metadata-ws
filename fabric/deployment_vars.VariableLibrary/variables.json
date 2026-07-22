@@ -1,4 +1,17 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/variables/1.0.0/schema.json",
-  "variables": []
+  "variables": [
+    {
+      "name": "source_api_url",
+      "note": "",
+      "type": "String",
+      "value": "https://weather.googleapis.com/v1/currentConditions:lookup"
+    },
+    {
+      "name": "test_var",
+      "note": "",
+      "type": "String",
+      "value": "Dev"
+    }
+  ]
 }
