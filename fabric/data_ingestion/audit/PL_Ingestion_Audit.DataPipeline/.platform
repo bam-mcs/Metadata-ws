@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Ingestion_Audit",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "829eba16-6ea5-ad4c-4d0e-5502e8f3ea59"
+  }
+}

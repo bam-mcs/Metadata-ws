@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Enrich_Audit",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "0fea51ca-388f-b8f0-4bfc-09f6c7a59869"
+  }
+}

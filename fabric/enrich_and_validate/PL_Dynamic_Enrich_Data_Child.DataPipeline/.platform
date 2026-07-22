@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Dynamic_Enrich_Data_Child",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f13d7129-bcdf-9f8c-4f74-3ed6b6423e14"
+  }
+}

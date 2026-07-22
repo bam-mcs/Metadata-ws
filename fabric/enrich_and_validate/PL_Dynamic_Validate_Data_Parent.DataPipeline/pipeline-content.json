@@ -1,0 +1,118 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderQuery": "SELECT \n    ic.control_id,\n    ic.source_type,\n    ic.source_table_name AS source_item_name,\n    ic.target_table_name AS target_item_name,\n    vc.validation_id,\n    vc.process_stage,\n    vc.validation_category,\n    vc.validation_scope,\n    vc.validation_criteria,\n    vc.enable_flag AS validation_enable_flag,\n    GETDATE() AS currentdatetime,\n    YEAR(GETDATE()) AS currentyear,\n    MONTH(GETDATE()) AS currentmonth,\n    DAY(GETDATE()) AS currentday\nFROM mtd.ingest_control AS ic\nINNER JOIN mtd.validation_config AS vc\n    ON ic.control_id = vc.control_id\nWHERE \n    ic.enable_flag = 1\n    AND vc.enable_flag = 1\n    AND vc.process_stage = 'ingest'\nORDER BY ic.control_id ASC;\n",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "AzureSqlTable",
+            "typeProperties": {
+              "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_LKP_fetchControlTableForValidate",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('ACT_GEN_LKP_fetchControlTableForValidate').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "par_source_type": {
+                    "value": "@item().source_type",
+                    "type": "Expression"
+                  },
+                  "par_source_item_name": {
+                    "value": "@item().source_item_name",
+                    "type": "Expression"
+                  },
+                  "par_target_item_name": {
+                    "value": "@item().target_item_name",
+                    "type": "Expression"
+                  },
+                  "par_validation_category": {
+                    "value": "@item().validation_category",
+                    "type": "Expression"
+                  },
+                  "par_validation_scope": {
+                    "value": "@item().validation_scope",
+                    "type": "Expression"
+                  },
+                  "par_validation_criteria": {
+                    "value": "@item().validation_criteria",
+                    "type": "Expression"
+                  },
+                  "par_validation_enable_flag": {
+                    "value": "@item().validation_enable_flag",
+                    "type": "Expression"
+                  },
+                  "par_process_stage": {
+                    "value": "@item().process_stage",
+                    "type": "Expression"
+                  },
+                  "par_validation_id": {
+                    "value": "@item().validation_id",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "3bb32a67-6fdc-8b72-4764-a4e13794a3d1",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "ACT_GEN_EPIPE_Invoke_Validate_Data_Child",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ACT_Validate_FOR_eachItemInControlTable",
+        "dependsOn": [
+          {
+            "activity": "ACT_GEN_LKP_fetchControlTableForValidate",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

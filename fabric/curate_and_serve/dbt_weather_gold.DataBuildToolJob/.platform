@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataBuildToolJob",
+    "displayName": "dbt_weather_gold"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ac9aa47f-4e55-b4fe-4147-98b9765004d8"
+  }
+}

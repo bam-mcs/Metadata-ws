@@ -1,0 +1,92 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderQuery": "select *, GETDATE() as currentdatetime,YEAR(GETDATE()) AS currentyear,MONTH(GETDATE()) AS currentmonth,DAY(GETDATE()) AS currentday from mtd.ingest_control where enable_flag = 1 and load_type='full' and source_type='azure_resource_graph';",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "AzureSqlTable",
+            "typeProperties": {
+              "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_LKP_fetchControlTableForFullLoad",
+        "description": "Control table is used to control and select an item from the source system to be moved into a data lake during full load. It uses  GETDATE() as currentdatetime to store the value of last successful ingestion.",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": false,
+          "items": {
+            "value": "@activity('ACT_GEN_LKP_fetchControlTableForFullLoad').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "target_table_name": {
+                    "value": "@item().target_table_name",
+                    "type": "Expression"
+                  },
+                  "source_query": {
+                    "value": "@item().source_query",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "39907da6-78e8-85fe-4048-b69bcfee0afa",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "ACT_GEN_EPIPE_Invoke_ARG_Full_Ingestion",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ACT_FULL_FOR_eachItemInControlTable",
+        "description": "This activity will iterate over all the objects fetched from the control table during full load. Please note that the sequential checkbox is on to ensure that the variables used are set appropriately.",
+        "dependsOn": [
+          {
+            "activity": "ACT_GEN_LKP_fetchControlTableForFullLoad",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

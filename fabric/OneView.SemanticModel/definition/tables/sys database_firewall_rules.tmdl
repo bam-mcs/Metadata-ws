@@ -1,0 +1,79 @@
+table 'sys database_firewall_rules'
+	lineageTag: a526d77f-3335-4baa-b6ab-6d1d4f578546
+
+	column id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5a86ccee-a672-4156-a645-15ede875a7ac
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(128)
+		lineageTag: 11529a4a-0199-4ade-ae75-0efaee5f2662
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_ip_address
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(45)
+		lineageTag: 7858a01e-a5d5-4e32-9845-e733de82ca54
+		summarizeBy: none
+		sourceColumn: start_ip_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_ip_address
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(45)
+		lineageTag: 16886afb-6f61-452f-b67f-2cfe9d79a2c1
+		summarizeBy: none
+		sourceColumn: end_ip_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: datetime
+		lineageTag: 749cfe9b-370f-4a9d-83b8-90a82f4bd04a
+		summarizeBy: none
+		sourceColumn: create_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column modify_date
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: datetime
+		lineageTag: f4d60165-2142-4f1c-9f0e-2c9e3189d3cc
+		summarizeBy: none
+		sourceColumn: modify_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'sys database_firewall_rules' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    sys_database_firewall_rules = Source{[Schema="sys",Item="database_firewall_rules"]}[Data]
+				in
+				    sys_database_firewall_rules
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

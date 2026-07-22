@@ -1,0 +1,144 @@
+table 'mtd shortcut_audit'
+	lineageTag: 9a79312d-90b4-4f27-b1d1-06c556d10e9d
+
+	column shortcut_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: e21e63fd-097b-4753-94f4-2644178f09a2
+		summarizeBy: sum
+		sourceColumn: shortcut_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column shortcut_name
+		dataType: string
+		sourceProviderType: varchar(250)
+		lineageTag: 33ce577e-9053-4b53-b7b6-e63b96f7201a
+		summarizeBy: none
+		sourceColumn: shortcut_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column shortcut_path
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: e49d0a3a-73da-4e83-9631-143ba904acc5
+		summarizeBy: none
+		sourceColumn: shortcut_path
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 45300724-d5bf-4639-bff6-eeaab3f967ef
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_lakehouse_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 9619ac79-33f5-4eef-9141-7b57892f8a19
+		summarizeBy: none
+		sourceColumn: target_lakehouse_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column medallion_layer
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: a6314809-21d2-42cf-bb40-5a3c278c10ae
+		summarizeBy: none
+		sourceColumn: medallion_layer
+
+		annotation SummarizationSetBy = Automatic
+
+	column onelake_path
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 1cb02663-bb24-470d-9174-8cc1b87f27db
+		summarizeBy: none
+		sourceColumn: onelake_path
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 3f338b5f-9f3c-4533-8371-aceb59871922
+		summarizeBy: none
+		sourceColumn: source_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: e7db66ae-e4ab-4f77-819d-9f8862f6235f
+		summarizeBy: none
+		sourceColumn: source_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_type
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5d11182e-9d81-40d9-8bd9-10741ac806b7
+		summarizeBy: none
+		sourceColumn: source_item_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_workspace_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: b84847f3-c236-4db3-8b8a-088564979a50
+		summarizeBy: none
+		sourceColumn: source_workspace_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_workspace_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: d3b03cee-6677-497a-ad94-9d087427f550
+		summarizeBy: none
+		sourceColumn: source_workspace_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column subpath
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: bdd555e9-f3b7-40f2-bbcc-f2f6fe54d69b
+		summarizeBy: none
+		sourceColumn: subpath
+
+		annotation SummarizationSetBy = Automatic
+
+	column shortcut_audit_refreshtime
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: a49b7595-57f2-4a46-9271-3c681d53d543
+		summarizeBy: none
+		sourceColumn: shortcut_audit_refreshtime
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd shortcut_audit' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_shortcut_audit = Source{[Schema="mtd",Item="shortcut_audit"]}[Data]
+				in
+				    mtd_shortcut_audit
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

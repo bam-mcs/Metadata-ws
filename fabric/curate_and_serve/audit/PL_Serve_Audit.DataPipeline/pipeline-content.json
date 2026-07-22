@@ -1,0 +1,240 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "PL_Serve_Auditing",
+        "description": "Auditing component is used to audit the enrichment from Silver to Gold. Auditing includes identifying any errors or issues that may have occurred during the process, as well as reviewing performance metrics to identify areas for improvement.",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[mtd].[capture_serve_audit_event_sp]",
+          "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0",
+          "storedProcedureParameters": {
+            "copy_duration": {
+              "value": {
+                "value": "@pipeline().parameters.par_copy_duration",
+                "type": "Expression"
+              },
+              "type": "Int32"
+            },
+            "data_consistency_verification": {
+              "value": {
+                "value": "@pipeline().parameters.par_data_consistency_verification",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "data_read": {
+              "value": {
+                "value": "@pipeline().parameters.par_data_read",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "data_written": {
+              "value": {
+                "value": "@pipeline().parameters.par_data_written",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "error_details": {
+              "value": {
+                "value": "@pipeline().parameters.par_error_details",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "event_activity_run_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_event_activity_run_id",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "event_end_time": {
+              "value": {
+                "value": "@pipeline().parameters.par_event_end_time",
+                "type": "Expression"
+              },
+              "type": "DateTime"
+            },
+            "event_run_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_event_run_id",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "event_start_time": {
+              "value": {
+                "value": "@pipeline().parameters.par_event_start_time",
+                "type": "Expression"
+              },
+              "type": "DateTime"
+            },
+            "event_triggered_by": {
+              "value": {
+                "value": "@pipeline().parameters.par_event_triggered_by",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "files_read": {
+              "value": {
+                "value": "@pipeline().parameters.par_files_read",
+                "type": "Expression"
+              },
+              "type": "Int32"
+            },
+            "files_written": {
+              "value": {
+                "value": "@pipeline().parameters.par_files_written",
+                "type": "Expression"
+              },
+              "type": "Int32"
+            },
+            "item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_item_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "load_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_load_type",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "pipeline_url": {
+              "value": {
+                "value": "@pipeline().parameters.par_pipeline_url",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "rows_read": {
+              "value": {
+                "value": "@pipeline().parameters.par_rows_read",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "rows_written": {
+              "value": {
+                "value": "@pipeline().parameters.par_rows_written",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "source_cutoff_time": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_cutoff_time",
+                "type": "Expression"
+              },
+              "type": "DateTime"
+            },
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "spark_monitoring_url": {
+              "value": {
+                "value": "@pipeline().parameters.par_spark_monitoring_url",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "status": {
+              "value": {
+                "value": "@pipeline().parameters.par_status",
+                "type": "Expression"
+              },
+              "type": "String"
+            }
+          }
+        },
+        "externalReferences": {
+          "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+        }
+      }
+    ],
+    "parameters": {
+      "par_copy_duration": {
+        "type": "string"
+      },
+      "par_data_consistency_verification": {
+        "type": "string"
+      },
+      "par_data_read": {
+        "type": "string"
+      },
+      "par_data_written": {
+        "type": "string"
+      },
+      "par_error_details": {
+        "type": "string"
+      },
+      "par_event_activity_run_id": {
+        "type": "string"
+      },
+      "par_event_end_time": {
+        "type": "string"
+      },
+      "par_event_run_id": {
+        "type": "string"
+      },
+      "par_event_start_time": {
+        "type": "string"
+      },
+      "par_event_triggered_by": {
+        "type": "string"
+      },
+      "par_files_read": {
+        "type": "string"
+      },
+      "par_files_written": {
+        "type": "string"
+      },
+      "par_item_name": {
+        "type": "string"
+      },
+      "par_load_type": {
+        "type": "string"
+      },
+      "par_pipeline_url": {
+        "type": "string"
+      },
+      "par_rows_read": {
+        "type": "string"
+      },
+      "par_rows_written": {
+        "type": "string"
+      },
+      "par_source_cutoff_time": {
+        "type": "string"
+      },
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_spark_monitoring_url": {
+        "type": "string"
+      },
+      "par_status": {
+        "type": "string"
+      }
+    }
+  }
+}

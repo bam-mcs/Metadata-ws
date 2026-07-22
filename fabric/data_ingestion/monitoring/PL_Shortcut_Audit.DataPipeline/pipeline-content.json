@@ -1,0 +1,160 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "PL_Shortcut_Auditing",
+        "description": "Audit shortcuts in the workspace.",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[mtd].[audit_shortcuts_sp]",
+          "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0",
+          "storedProcedureParameters": {
+            "medallion_layer": {
+              "value": {
+                "value": "@pipeline().parameters.par_medallion_layer",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "onelake_path": {
+              "value": {
+                "value": "@pipeline().parameters.par_onelake_path",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "shortcut_audit_refreshtime": {
+              "value": {
+                "value": "@pipeline().parameters.par_shortcut_audit_refreshtime",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "shortcut_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_shortcut_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "shortcut_path": {
+              "value": {
+                "value": "@pipeline().parameters.par_shortcut_path",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_item_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_id",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_item_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_type",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_workspace_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_workspace_id",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_workspace_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_workspace_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "subpath": {
+              "value": {
+                "value": "@pipeline().parameters.par_subpath",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "target_lakehouse_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_target_lakehouse_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            }
+          }
+        },
+        "externalReferences": {
+          "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+        }
+      }
+    ],
+    "parameters": {
+      "par_medallion_layer": {
+        "type": "string"
+      },
+      "par_onelake_path": {
+        "type": "string"
+      },
+      "par_shortcut_audit_refreshtime": {
+        "type": "string"
+      },
+      "par_shortcut_name": {
+        "type": "string"
+      },
+      "par_shortcut_path": {
+        "type": "string"
+      },
+      "par_source_item_id": {
+        "type": "string"
+      },
+      "par_source_item_name": {
+        "type": "string"
+      },
+      "par_source_item_type": {
+        "type": "string"
+      },
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_source_workspace_id": {
+        "type": "string"
+      },
+      "par_source_workspace_name": {
+        "type": "string"
+      },
+      "par_subpath": {
+        "type": "string"
+      },
+      "par_target_lakehouse_name": {
+        "type": "string"
+      }
+    }
+  }
+}

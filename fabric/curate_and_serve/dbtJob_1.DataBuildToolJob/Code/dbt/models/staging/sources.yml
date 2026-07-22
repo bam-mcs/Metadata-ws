@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: silver
+    schema: "weather_data"
+    tables:
+      - name: silver_nsw_current_weather
+        description: Current weather snapshots per NSW location, one row per (location, reading time).

@@ -1,0 +1,15 @@
+version: 2
+
+# OneLake shortcut inside the Gold Warehouse, pointing at the Silver Lakehouse table.
+# Set up once, outside dbt: Gold Warehouse -> New shortcut -> OneLake -> Silver Lakehouse ->
+# Tables -> silver_nsw_current_weather.
+#
+# <SILVER_SHORTCUT_SCHEMA> is whatever schema the shortcut landed in (check the Warehouse
+# explorer - often "dbo" unless you organized it otherwise).
+
+sources:
+  - name: silver
+    schema: "weather_data"
+    tables:
+      - name: silver_nsw_current_weather
+        description: Current weather snapshots per NSW location, one row per (location, reading time).

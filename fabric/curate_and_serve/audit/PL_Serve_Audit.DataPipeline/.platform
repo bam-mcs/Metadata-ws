@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Serve_Audit",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4c28d1d7-5e07-95e2-42b8-b5bec5b60d68"
+  }
+}

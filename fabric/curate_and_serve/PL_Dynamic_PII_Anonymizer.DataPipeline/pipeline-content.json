@@ -1,0 +1,223 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "3e1e2ef8-9176-9d82-4207-2226ca139d99",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "source_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "transformation_flag": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_flag",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "transformation_rule": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_rule",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "transformation_rule_criteria": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_rule_criteria",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "target_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_target_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_PII_Anonymizer",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_copy_duration": {
+              "value": "@activity('ACT_PII_Anonymizer').output.executionDuration",
+              "type": "Expression"
+            },
+            "par_data_consistency_verification": {
+              "value": "@json(activity('ACT_PII_Anonymizer').output.result.exitValue).dataConsistencyVerification.VerificationResult",
+              "type": "Expression"
+            },
+            "par_data_read": "0",
+            "par_data_written": "0",
+            "par_error_details": {
+              "value": "@if(equals(activity('ACT_PII_Anonymizer').output.result.runStatus, 'Succeeded'),'', activity('ACT_PII_Anonymizer').output.result.error)",
+              "type": "Expression"
+            },
+            "par_event_activity_run_id": {
+              "value": "@activity('ACT_PII_Anonymizer').output.result.runId",
+              "type": "Expression"
+            },
+            "par_event_end_time": {
+              "value": "@activity('ACT_PII_Anonymizer').output.result.metadata.runEndTime",
+              "type": "Expression"
+            },
+            "par_event_run_id": {
+              "value": "@pipeline().RunId",
+              "type": "Expression"
+            },
+            "par_event_start_time": {
+              "value": "@activity('ACT_PII_Anonymizer').output.result.metadata.runStartTime",
+              "type": "Expression"
+            },
+            "par_event_triggered_by": {
+              "value": "@pipeline().TriggerType",
+              "type": "Expression"
+            },
+            "par_files_read": "0",
+            "par_files_written": "0",
+            "par_item_name": {
+              "value": "@json(activity('ACT_PII_Anonymizer').output.result.exitValue).item_name",
+              "type": "Expression"
+            },
+            "par_load_type": "full",
+            "par_pipeline_url": {
+              "value": "@concat('https://app.fabric.microsoft.com/workloads/data-pipeline/monitoring/workspaces/',pipeline().DataFactory,'/pipelines/',pipeline().PipelineName,'/',pipeline().RunId)",
+              "type": "Expression"
+            },
+            "par_rows_read": {
+              "value": "@json(activity('ACT_PII_Anonymizer').output.result.exitValue).rowsRead",
+              "type": "Expression"
+            },
+            "par_rows_written": {
+              "value": "@if(equals(activity('ACT_PII_Anonymizer').output.result.runStatus, 'Succeeded'),json(activity('ACT_PII_Anonymizer').output.result.exitValue).rowsWritten, 0)",
+              "type": "Expression"
+            },
+            "par_source_cutoff_time": {
+              "value": "@utcNow()",
+              "type": "Expression"
+            },
+            "par_source_type": {
+              "value": "@json(activity('ACT_PII_Anonymizer').output.result.exitValue).source_type",
+              "type": "Expression"
+            },
+            "par_spark_monitoring_url": {
+              "value": "@activity('ACT_PII_Anonymizer').output.SparkMonitoringURL",
+              "type": "Expression"
+            },
+            "par_status": {
+              "value": "@if(equals(activity('ACT_PII_Anonymizer').output.result.runStatus, 'Succeeded'), 'success', 'failed')",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "4c28d1d7-5e07-95e2-42b8-b5bec5b60d68",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invoke_PII_Auditing",
+        "dependsOn": [
+          {
+            "activity": "ACT_PII_Anonymizer",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_error_details": {
+              "value": "@if(equals(activity('ACT_PII_Anonymizer').output.result.runStatus, 'Succeeded'),'', activity('ACT_PII_Anonymizer').output.result.error)",
+              "type": "Expression"
+            },
+            "par_successflag": {
+              "value": "@if(equals(activity('ACT_PII_Anonymizer').output.result.runStatus, 'Succeeded'),1,0)",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "47932207-1395-835a-48cc-b49765adade5",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invokeEmailNotificationForPII",
+        "dependsOn": [
+          {
+            "activity": "ACT_PII_Anonymizer",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_source_item_name": {
+        "type": "string"
+      },
+      "par_transformation_flag": {
+        "type": "string"
+      },
+      "par_transformation_rule": {
+        "type": "string"
+      },
+      "par_transformation_rule_criteria": {
+        "type": "string"
+      },
+      "par_target_item_name": {
+        "type": "string"
+      }
+    }
+  }
+}

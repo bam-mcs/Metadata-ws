@@ -1,0 +1,220 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "23b41299-d966-be64-48a4-9869dbfa7c20",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "source_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "validation_category": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_category",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "validation_scope": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_scope",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "validation_criteria": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_criteria",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "target_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_target_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "validation_enable_flag": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_enable_flag",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "process_stage": {
+              "value": {
+                "value": "@pipeline().parameters.par_process_stage",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "validation_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_id",
+                "type": "Expression"
+              },
+              "type": "int"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_Validate_Data",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_source_item_name": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).source_item_name",
+              "type": "Expression"
+            },
+            "par_source_type": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).source_type",
+              "type": "Expression"
+            },
+            "par_target_item_name": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).target_item_name",
+              "type": "Expression"
+            },
+            "par_validation_category": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).validation_category",
+              "type": "Expression"
+            },
+            "par_validation_criteria": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).validation_criteria",
+              "type": "Expression"
+            },
+            "par_validation_scope": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).validation_scope",
+              "type": "Expression"
+            },
+            "par_validation_status": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).validation_status",
+              "type": "Expression"
+            },
+            "par_validation_id": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).validation_id",
+              "type": "Expression"
+            },
+            "par_process_stage": {
+              "value": "@json(activity('ACT_Validate_Data').output.result.exitValue).process_stage",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "9a53ea0e-75d0-9ba4-4ad4-0d8ac1a2a6d2",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invoke_Validation_Auditing",
+        "dependsOn": [
+          {
+            "activity": "ACT_Validate_Data",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_error_details": {
+              "value": "@if(equals(activity('ACT_Validate_Data').output.result.runStatus, 'Succeeded'),'', activity('ACT_Validate_Data').output.result.error)",
+              "type": "Expression"
+            },
+            "par_successflag": {
+              "value": "@if(equals(activity('ACT_Validate_Data').output.result.runStatus, 'Succeeded'),1,0)",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "47932207-1395-835a-48cc-b49765adade5",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invokeValidationNotificationForEnrichData",
+        "dependsOn": [
+          {
+            "activity": "ACT_Validate_Data",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_source_item_name": {
+        "type": "string"
+      },
+      "par_validation_category": {
+        "type": "string"
+      },
+      "par_validation_scope": {
+        "type": "string"
+      },
+      "par_validation_criteria": {
+        "type": "string"
+      },
+      "par_target_item_name": {
+        "type": "string"
+      },
+      "par_validation_enable_flag": {
+        "type": "int"
+      },
+      "par_process_stage": {
+        "type": "string"
+      },
+      "par_validation_id": {
+        "type": "int"
+      }
+    }
+  }
+}

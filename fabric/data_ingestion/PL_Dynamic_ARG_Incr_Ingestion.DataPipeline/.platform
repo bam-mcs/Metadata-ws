@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Dynamic_ARG_Incr_Ingestion",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e8e9d0c2-51fe-8654-4fc4-984a56e8e00b"
+  }
+}

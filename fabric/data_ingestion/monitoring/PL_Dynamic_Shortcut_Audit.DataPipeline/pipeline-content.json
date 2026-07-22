@@ -1,0 +1,105 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "fc4ce68f-dfcb-9ab3-480f-a7d5a82d2b35",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_NB_Audit_Workspace_Shortcuts",
+        "description": "Use Fabric APIs to audit Lakehouse shortcuts in current workspace",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_medallion_layer": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].medallion_layer",
+              "type": "Expression"
+            },
+            "par_onelake_path": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].onelake_path",
+              "type": "Expression"
+            },
+            "par_shortcut_audit_refreshtime": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].shortcut_audit_refreshtime",
+              "type": "Expression"
+            },
+            "par_shortcut_name": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].shortcut_name",
+              "type": "Expression"
+            },
+            "par_shortcut_path": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].shortcut_path",
+              "type": "Expression"
+            },
+            "par_source_item_id": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_item_id",
+              "type": "Expression"
+            },
+            "par_source_item_name": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_item_name",
+              "type": "Expression"
+            },
+            "par_source_item_type": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_item_type",
+              "type": "Expression"
+            },
+            "par_source_type": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_type",
+              "type": "Expression"
+            },
+            "par_source_workspace_id": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_workspace_id",
+              "type": "Expression"
+            },
+            "par_source_workspace_name": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].source_workspace_name",
+              "type": "Expression"
+            },
+            "par_subpath": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].subpath",
+              "type": "Expression"
+            },
+            "par_target_lakehouse_name": {
+              "value": "@json(activity('ACT_NB_Audit_Workspace_Shortcuts').output.result.exitValue)[0].target_lakehouse_name",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "fd61a756-2274-ac07-4448-74c8eacb41a1",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_EPIPE_Audit_Shortcuts",
+        "dependsOn": [
+          {
+            "activity": "ACT_NB_Audit_Workspace_Shortcuts",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

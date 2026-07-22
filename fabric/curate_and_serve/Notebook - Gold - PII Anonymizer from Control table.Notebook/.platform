@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Notebook - Gold - PII Anonymizer from Control table",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3e1e2ef8-9176-9d82-4207-2226ca139d99"
+  }
+}

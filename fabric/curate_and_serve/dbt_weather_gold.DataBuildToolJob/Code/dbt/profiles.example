@@ -1,0 +1,29 @@
+# Example only - this file is NOT read from inside your dbt project directory.
+# It belongs in ~/.dbt/profiles.yml (or wherever DBT_PROFILES_DIR points).
+# Never commit real credentials - use environment variables as shown below.
+#
+# Requires: pip install dbt-fabric
+# Also requires the "ODBC Driver 18 for SQL Server" installed on the machine running dbt.
+
+nsw_weather_gold:
+  target: dev
+  outputs:
+    dev:
+      type: fabric
+      driver: "ODBC Driver 18 for SQL Server"
+      server: "<your-workspace-warehouse-sql-endpoint>.datawarehouse.fabric.microsoft.com"
+      port: 1433
+      database: "<GOLD_WAREHOUSE_NAME>"
+
+      # --- Auth option A: interactive (good for local dev, browser login prompt) ---
+      authentication: ActiveDirectoryInteractive
+      user: "{{ env_var('FABRIC_USER_EMAIL') }}"
+
+      # --- Auth option B: service principal (good for CI/CD / scheduled runs) ---
+      # authentication: ActiveDirectoryServicePrincipal
+      # client_id: "{{ env_var('FABRIC_SP_CLIENT_ID') }}"
+      # client_secret: "{{ env_var('FABRIC_SP_CLIENT_SECRET') }}"
+      # tenant_id: "{{ env_var('FABRIC_TENANT_ID') }}"
+
+      schema: "gold"
+      threads: 4

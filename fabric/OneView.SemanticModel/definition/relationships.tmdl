@@ -1,0 +1,21 @@
+relationship a54fd02f-5508-f6e4-e354-b3c7ce850288
+	fromColumn: 'mtd transformation_config'.control_id
+	toColumn: 'mtd serve_control'.control_id
+
+relationship d26ddce3-3961-9be7-b47a-df4198f78719
+	crossFilteringBehavior: bothDirections
+	securityFilteringBehavior: bothDirections
+	fromColumn: 'mtd transformation_config'.control_id
+	toColumn: 'mtd enrich_control'.control_id
+
+relationship 5e296027-b0b2-4753-5de2-0a4cfc3ba27a
+	isActive: false
+	fromColumn: 'mtd transformation_config'.control_id
+	toColumn: 'mtd ingest_control'.control_id
+
+relationship 29d1d81a-25cf-4c7b-9c27-4b8133908c79
+	fromColumn: 'mtd validation_status'.validation_id
+	toColumn: 'mtd validation_config'.validation_id
+
+	annotation PBI_IsFromSource = FS
+

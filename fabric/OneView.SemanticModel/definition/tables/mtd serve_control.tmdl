@@ -1,0 +1,121 @@
+table 'mtd serve_control'
+	lineageTag: f69d6ddc-0c34-453d-beea-00b778260253
+
+	column control_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a81124a5-2a57-4206-82d5-804926d8c65f
+		summarizeBy: none
+		sourceColumn: control_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: fdc182cb-815f-4e70-b7b9-256d9bdd27ff
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_name
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: e61951f6-a095-4542-bd44-90b4e7be4964
+		summarizeBy: none
+		sourceColumn: source_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_connection_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: caa6aa74-f835-45f7-8912-164bf05170b8
+		summarizeBy: none
+		sourceColumn: source_connection_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 807fa612-5f27-4ca2-859c-45f8adb19227
+		summarizeBy: none
+		sourceColumn: azure_key_vault
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault_secret_client_id_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 01f7c621-e097-443c-8d43-439f01ae10e2
+		summarizeBy: none
+		sourceColumn: azure_key_vault_secret_client_id_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault_secret_client_secret_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: ae1324e0-e762-4d46-bff1-b001957176ed
+		summarizeBy: none
+		sourceColumn: azure_key_vault_secret_client_secret_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_format
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: e2073a43-d7d7-4354-a10a-f7d6b4e299ea
+		summarizeBy: none
+		sourceColumn: source_format
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 6100f01e-4c93-40d7-a4a0-26df91b5a32c
+		summarizeBy: none
+		sourceColumn: target_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column transformation_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 2c2f87a5-92d1-4d50-8fcd-ec591ef4f069
+		summarizeBy: none
+		sourceColumn: transformation_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column enable_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: daeae638-8dc6-4197-bbf3-df0bd1e26ef3
+		summarizeBy: none
+		sourceColumn: enable_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd serve_control' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_serve_control = Source{[Schema="mtd",Item="serve_control"]}[Data]
+				in
+				    mtd_serve_control
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

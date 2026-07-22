@@ -1,0 +1,266 @@
+table 'mtd serve_audit'
+	lineageTag: 34b441e6-f782-4b57-bede-70391c20696b
+
+	measure ServeRows =
+			
+			SUM('mtd serve_audit'[rows_read]) + SUM('mtd serve_audit'[rows_written])
+		formatString: 0
+		lineageTag: 5765a49f-18df-4ca8-be26-886311553f73
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure ServeFailure =
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd serve_audit', 'mtd serve_audit'[status] = "Failure")),
+			    COUNTROWS('mtd serve_audit'),
+			    0
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: 50f32d0b-0708-402e-a4e8-afe66656e379
+
+	measure Servesucess =
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd serve_audit', 'mtd serve_audit'[status] = "Success")),
+			    COUNTROWS('mtd serve_audit'),
+			    0
+			)
+		lineageTag: 20cfcd42-75f7-4a11-8e26-9e3e8646ba41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ServeFailureDisplay = IF ( ISBLANK ( 'mtd serve_audit'[ServeFailure] ), "0%", 'mtd serve_audit'[ServeFailure] )
+		lineageTag: 3251ffda-7427-49af-a96e-47a52940b37c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column run_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 18bc950f-c645-4c50-a25a-fe7005f66a60
+		summarizeBy: sum
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: fb4bf033-f8fa-40cb-9d5f-14321a1b483a
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 54b831ee-f1d6-4173-9ac4-8c5a399c59ef
+		summarizeBy: none
+		sourceColumn: event_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_activity_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: ce99f1a1-f796-4ebf-befd-4db8f7d33398
+		summarizeBy: none
+		sourceColumn: event_activity_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 79c433dd-f121-4e6e-aa5d-0551c584f07e
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 90941fbc-d08c-4266-82b1-f58c8ee98a45
+		summarizeBy: sum
+		sourceColumn: data_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 65003d87-bc39-43d2-b98b-e7e2464444ad
+		summarizeBy: sum
+		sourceColumn: data_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 597550a1-a8d3-4d7f-ba69-75dfdd042727
+		summarizeBy: sum
+		sourceColumn: files_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 15b68e75-37fe-40f3-9ce9-3ea12666daa8
+		summarizeBy: sum
+		sourceColumn: files_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 309a4028-8f5a-4f64-8d1d-7ae53d2448b4
+		summarizeBy: sum
+		sourceColumn: rows_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ed2b4855-f021-4ce8-a983-be6649626451
+		summarizeBy: sum
+		sourceColumn: rows_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_consistency_verification
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: fd71e47a-5346-4363-b425-b9ff277bfafd
+		summarizeBy: none
+		sourceColumn: data_consistency_verification
+
+		annotation SummarizationSetBy = Automatic
+
+	column copy_duration
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c656dacb-2568-4579-90ba-ef68193e1bf2
+		summarizeBy: sum
+		sourceColumn: copy_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_start_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 1e08af3c-2720-48cf-8e90-6d36beeefad7
+		summarizeBy: none
+		sourceColumn: event_start_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_end_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 6b89dff2-6b19-473c-ac81-84f9408b6a00
+		summarizeBy: none
+		sourceColumn: event_end_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_cutoff_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 49634174-1d4e-4e5f-ba09-bb7d0f0fc82e
+		summarizeBy: none
+		sourceColumn: source_cutoff_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_type
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: bea7362a-b5e1-41fa-97bd-34d1028ace15
+		summarizeBy: none
+		sourceColumn: load_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: d1907866-87ec-41fe-8087-128c4994931c
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_triggered_by
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 8986d87c-6d1d-4794-b875-6a1795a41401
+		summarizeBy: none
+		sourceColumn: event_triggered_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_details
+		dataType: string
+		sourceProviderType: varchar(1500)
+		lineageTag: 5851bb4f-973c-4d6d-b67d-616519d038f8
+		summarizeBy: none
+		sourceColumn: error_details
+
+		annotation SummarizationSetBy = Automatic
+
+	column pipeline_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: 0622fe9c-5766-4514-a5d0-e6bde68d0496
+		summarizeBy: none
+		sourceColumn: pipeline_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column spark_monitoring_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: e76f1fcf-4712-465f-8251-7427cbe6e1f1
+		summarizeBy: none
+		sourceColumn: spark_monitoring_url
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd serve_audit' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_serve_audit = Source{[Schema="mtd",Item="serve_audit"]}[Data]
+				in
+				    mtd_serve_audit
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,87 @@
+table 'mtd validation_config'
+	lineageTag: c1e7330e-0698-4ad9-ae71-23821b649c68
+
+	column validation_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c4972864-df2a-4397-baec-c32ca984dc2f
+		summarizeBy: none
+		sourceColumn: validation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column control_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 050ff034-a6f2-4132-a9c0-4f0d871c52fc
+		summarizeBy: none
+		sourceColumn: control_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column process_stage
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 2164fc12-f42c-486e-86f2-44710277d3b1
+		summarizeBy: none
+		sourceColumn: process_stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_category
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 8a848777-c89e-4ff8-a9d4-1a0b3525a7c8
+		summarizeBy: none
+		sourceColumn: validation_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_scope
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 99879dfd-2b88-459a-afef-991c3256f8e5
+		summarizeBy: none
+		sourceColumn: validation_scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_criteria
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(500)
+		lineageTag: 42fce219-e24f-4ea3-8e71-c0c67be01482
+		summarizeBy: none
+		sourceColumn: validation_criteria
+
+		annotation SummarizationSetBy = Automatic
+
+	column enable_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 58163f58-158d-4094-9017-e82571d44915
+		summarizeBy: none
+		sourceColumn: enable_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd validation_config' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_validation_config = Source{[Schema="mtd",Item="validation_config"]}[Data]
+				in
+				    mtd_validation_config
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

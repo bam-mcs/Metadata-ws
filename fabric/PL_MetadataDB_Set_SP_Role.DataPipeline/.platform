@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_MetadataDB_Set_SP_Role",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "0ab37246-2dd4-bd72-4f04-8173cfc05bf7"
+  }
+}

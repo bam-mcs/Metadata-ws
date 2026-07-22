@@ -1,0 +1,122 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderQuery": "SELECT \n    ec.*,\n    tc.transformation_id,\n    tc.process_stage,\n    tc.transformation_rule,\n    tc.transformation_type,\n    tc.transformation_rule_criteria,\n    tc.enable_flag AS transformation_enable_flag,\n    GETDATE() AS currentdatetime,\n    YEAR(GETDATE()) AS currentyear,\n    MONTH(GETDATE()) AS currentmonth,\n    DAY(GETDATE()) AS currentday\nFROM mtd.enrich_control AS ec\nINNER JOIN mtd.transformation_config AS tc\n    ON ec.control_id = tc.control_id\nWHERE \n    ec.enable_flag = 1\n    AND tc.process_stage = 'enrich'\nORDER BY ec.control_id ASC;\n",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "AzureSqlTable",
+            "typeProperties": {
+              "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_LKP_fetchControlTableForEnrich",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('ACT_GEN_LKP_fetchControlTableForEnrich').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "par_azure_key_vault": {
+                    "value": "@item().azure_key_vault",
+                    "type": "Expression"
+                  },
+                  "par_azure_key_vault_secret_client_id_name": {
+                    "value": "@item().azure_key_vault_secret_client_id_name",
+                    "type": "Expression"
+                  },
+                  "par_azure_key_vault_secret_client_secret_name": {
+                    "value": "@item().azure_key_vault_secret_client_secret_name",
+                    "type": "Expression"
+                  },
+                  "par_source_type": {
+                    "value": "@item().source_type",
+                    "type": "Expression"
+                  },
+                  "par_source_item_name": {
+                    "value": "@item().source_item_name",
+                    "type": "Expression"
+                  },
+                  "par_source_connection_url": {
+                    "value": "@item().source_connection_url",
+                    "type": "Expression"
+                  },
+                  "par_transformation_flag": {
+                    "value": "@item().transformation_flag",
+                    "type": "Expression"
+                  },
+                  "par_transformation_rule": {
+                    "value": "@item().transformation_rule",
+                    "type": "Expression"
+                  },
+                  "par_transformation_rule_criteria": {
+                    "value": "@item().transformation_rule_criteria",
+                    "type": "Expression"
+                  },
+                  "par_target_item_name": {
+                    "value": "@item().target_item_name",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "f13d7129-bcdf-9f8c-4f74-3ed6b6423e14",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "ACT_GEN_EPIPE_Invoke_Enrich_Data_Child",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ACT_Enrich_FOR_eachItemInControlTable",
+        "dependsOn": [
+          {
+            "activity": "ACT_GEN_LKP_fetchControlTableForEnrich",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

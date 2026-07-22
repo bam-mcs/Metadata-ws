@@ -1,0 +1,6 @@
+dependencies:
+  - pip:
+      - azure-mgmt-resourcegraph==8.0.0
+      - azure-identity==1.25.1
+      - azure-core==1.36.0
+      - azure-common==1.1.28

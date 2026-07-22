@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dim_location
+    description: One row per NSW location.
+    columns:
+      - name: location_id
+        tests: [not_null, unique]
+      - name: location_name
+        tests: [not_null, unique]
+
+  - name: dim_date
+    description: Calendar date spine.
+    columns:
+      - name: date_id
+        tests: [not_null, unique]
+      - name: calendar_date
+        tests: [not_null, unique]
+
+  - name: fct_current_weather_daily
+    description: Observed weather, aggregated to one row per location per day.
+    columns:
+      - name: location_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_id
+      - name: date_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_id

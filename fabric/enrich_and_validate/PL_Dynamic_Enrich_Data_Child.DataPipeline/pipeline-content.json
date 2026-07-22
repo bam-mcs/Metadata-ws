@@ -1,0 +1,263 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "98d680c4-ee93-9317-4c1e-c3b20fc8c887",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "azure_key_vault": {
+              "value": {
+                "value": "@pipeline().parameters.par_azure_key_vault",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "azure_key_vault_secret_client_id_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_azure_key_vault_secret_client_id_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "azure_key_vault_secret_client_secret_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_azure_key_vault_secret_client_secret_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "source_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "source_connection_url": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_connection_url",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "transformation_flag": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_flag",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "transformation_rule": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_rule",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "transformation_rule_criteria": {
+              "value": {
+                "value": "@pipeline().parameters.par_transformation_rule_criteria",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "target_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_target_item_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_Enrich_Data",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_copy_duration": {
+              "value": "@activity('ACT_Enrich_Data').output.executionDuration",
+              "type": "Expression"
+            },
+            "par_data_consistency_verification": {
+              "value": "@json(activity('ACT_Enrich_Data').output.result.exitValue).dataConsistencyVerification.VerificationResult",
+              "type": "Expression"
+            },
+            "par_data_read": "0",
+            "par_data_written": "0",
+            "par_error_details": {
+              "value": "@if(equals(activity('ACT_Enrich_Data').output.result.runStatus, 'Succeeded'),'', activity('ACT_Enrich_Data').output.result.error)",
+              "type": "Expression"
+            },
+            "par_event_activity_run_id": {
+              "value": "@activity('ACT_Enrich_Data').output.result.runId",
+              "type": "Expression"
+            },
+            "par_event_end_time": {
+              "value": "@activity('ACT_Enrich_Data').output.result.metadata.runEndTime",
+              "type": "Expression"
+            },
+            "par_event_run_id": {
+              "value": "@pipeline().RunId",
+              "type": "Expression"
+            },
+            "par_event_start_time": {
+              "value": "@activity('ACT_Enrich_Data').output.result.metadata.runStartTime",
+              "type": "Expression"
+            },
+            "par_event_triggered_by": {
+              "value": "@pipeline().TriggerType",
+              "type": "Expression"
+            },
+            "par_files_read": "0",
+            "par_files_written": "0",
+            "par_item_name": {
+              "value": "@json(activity('ACT_Enrich_Data').output.result.exitValue).item_name",
+              "type": "Expression"
+            },
+            "par_load_type": "full",
+            "par_pipeline_url": {
+              "value": "@concat('https://app.fabric.microsoft.com/workloads/data-pipeline/monitoring/workspaces/',pipeline().DataFactory,'/pipelines/',pipeline().PipelineName,'/',pipeline().RunId)",
+              "type": "Expression"
+            },
+            "par_rows_read": {
+              "value": "@json(activity('ACT_Enrich_Data').output.result.exitValue).rowsRead",
+              "type": "Expression"
+            },
+            "par_rows_written": {
+              "value": "@if(equals(activity('ACT_Enrich_Data').output.result.runStatus, 'Succeeded'),json(activity('ACT_Enrich_Data').output.result.exitValue).rowsWritten, 0)",
+              "type": "Expression"
+            },
+            "par_source_cutoff_time": {
+              "value": "@utcNow()",
+              "type": "Expression"
+            },
+            "par_source_type": {
+              "value": "@json(activity('ACT_Enrich_Data').output.result.exitValue).source_type",
+              "type": "Expression"
+            },
+            "par_spark_monitoring_url": {
+              "value": "@activity('ACT_Enrich_Data').output.SparkMonitoringURL",
+              "type": "Expression"
+            },
+            "par_status": {
+              "value": "@if(equals(activity('ACT_Enrich_Data').output.result.runStatus, 'Succeeded'), 'success', 'failed')",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "0fea51ca-388f-b8f0-4bfc-09f6c7a59869",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invoke_Enrich_Auditing",
+        "dependsOn": [
+          {
+            "activity": "ACT_Enrich_Data",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "par_error_details": {
+              "value": "@if(equals(activity('ACT_Enrich_Data').output.result.runStatus, 'Succeeded'),'', activity('ACT_Enrich_Data').output.result.error)",
+              "type": "Expression"
+            },
+            "par_successflag": {
+              "value": "@if(equals(activity('ACT_Enrich_Data').output.result.runStatus, 'Succeeded'),1,0)",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "47932207-1395-835a-48cc-b49765adade5",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "5de6ce39-fcce-439b-80c0-5ce036f7f350"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ACT_GEN_EPIPE_invokeEmailNotificationForEnrichData",
+        "dependsOn": [
+          {
+            "activity": "ACT_Enrich_Data",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "par_azure_key_vault": {
+        "type": "string"
+      },
+      "par_azure_key_vault_secret_client_id_name": {
+        "type": "string"
+      },
+      "par_azure_key_vault_secret_client_secret_name": {
+        "type": "string"
+      },
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_source_item_name": {
+        "type": "string"
+      },
+      "par_source_connection_url": {
+        "type": "string"
+      },
+      "par_transformation_flag": {
+        "type": "string"
+      },
+      "par_transformation_rule": {
+        "type": "string"
+      },
+      "par_transformation_rule_criteria": {
+        "type": "string"
+      },
+      "par_target_item_name": {
+        "type": "string"
+      }
+    }
+  }
+}

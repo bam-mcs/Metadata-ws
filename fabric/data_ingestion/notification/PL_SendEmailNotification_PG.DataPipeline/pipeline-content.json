@@ -1,0 +1,81 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Check for Success or Failure",
+        "description": "Logical switch for pipeline run success or failure ",
+        "type": "IfCondition",
+        "dependsOn": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@pipeline().parameters.par_successflag",
+            "type": "Expression"
+          },
+          "ifFalseActivities": [
+            {
+              "name": "Email Failure",
+              "type": "Office365Outlook",
+              "dependsOn": [],
+              "typeProperties": {
+                "inputs": {
+                  "method": "post",
+                  "path": "/v2/Mail",
+                  "body": {
+                    "To": "rphoon@macquariecloudservices.com",
+                    "Subject": "Pipeline Run Failure",
+                    "Body": "<p><br>\nPipeline run @{pipeline().RunId} from workspace @{pipeline().DataFactory} Failure.</p>",
+                    "Sensitivity": "a024ce9f-34fe-44d8-83c2-12b6b3f124d3",
+                    "Importance": "Normal"
+                  }
+                }
+              }
+            }
+          ],
+          "ifTrueActivities": [
+            {
+              "name": "Email Success",
+              "type": "Office365Outlook",
+              "dependsOn": [],
+              "typeProperties": {
+                "inputs": {
+                  "method": "post",
+                  "path": "/v2/Mail",
+                  "body": {
+                    "To": "rphoon@macquariecloudservices.com",
+                    "Subject": "Pipeline Run Succeeded Notification",
+                    "Body": "<p>Pipeline @{pipeline().Pipeline} from Fabric workspace @{pipeline().DataFactory} is successful.</p>",
+                    "Sensitivity": "a024ce9f-34fe-44d8-83c2-12b6b3f124d3",
+                    "Importance": "Normal",
+                    "From": ""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "par_error_details": {
+        "type": "String"
+      },
+      "par_successflag": {
+        "type": "Bool"
+      }
+    },
+    "variables": {
+      "test": {
+        "type": "Boolean"
+      }
+    },
+    "logicAppsConnectionPayload": {
+      "id": "/subscriptions/deabdc0e-0e7e-4b5e-8761-d6b658eb627d/resourceGroups/connections-62cb089d-0592-41c9-a0c8-f658d407f812/providers/Microsoft.Web/connections/1_7e2f97e4-aa9a-42bd-b94c-798ca04fc63d_2a6dbb2e-784c-4752-a600-889c139a9d2d",
+      "properties": {
+        "api": {
+          "name": "office365",
+          "id": "/subscriptions/deabdc0e-0e7e-4b5e-8761-d6b658eb627d/providers/Microsoft.Web/locations/australiaeast/managedApis/office365"
+        }
+      }
+    }
+  }
+}

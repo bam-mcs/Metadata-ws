@@ -1,0 +1,121 @@
+table 'mtd enrich_control'
+	lineageTag: 42712e5b-bc5c-46ec-948c-458f5dcc7c73
+
+	column control_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d18a6a6a-a1c9-4cf9-9025-91fa7d121f1a
+		summarizeBy: none
+		sourceColumn: control_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: ded08917-2247-457e-ab94-fe4bff3c49b3
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_name
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: d8a8c775-b527-44ae-a338-41ade453970d
+		summarizeBy: none
+		sourceColumn: source_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_connection_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: be5320ec-c527-41ed-bae7-72705ec49781
+		summarizeBy: none
+		sourceColumn: source_connection_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 9c1893d4-1086-4de2-b6dc-29ad83351c2c
+		summarizeBy: none
+		sourceColumn: azure_key_vault
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault_secret_client_id_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: ee06b866-b9e1-41cb-82a4-3d47dc492e0a
+		summarizeBy: none
+		sourceColumn: azure_key_vault_secret_client_id_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column azure_key_vault_secret_client_secret_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 70e84524-0049-4641-ac88-123cdc947277
+		summarizeBy: none
+		sourceColumn: azure_key_vault_secret_client_secret_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_type
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5435eba2-79a2-46cc-a715-1dee153c0007
+		summarizeBy: none
+		sourceColumn: load_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 23e0d2c8-85c3-42b7-9977-0ee42ba899a1
+		summarizeBy: none
+		sourceColumn: target_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column transformation_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6bd0eebd-34b5-4bea-8a50-c7811b6ec244
+		summarizeBy: none
+		sourceColumn: transformation_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column enable_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 27d24280-213a-4037-b828-1efc454a8856
+		summarizeBy: none
+		sourceColumn: enable_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd enrich_control' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_enrich_control = Source{[Schema="mtd",Item="enrich_control"]}[Data]
+				in
+				    mtd_enrich_control
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

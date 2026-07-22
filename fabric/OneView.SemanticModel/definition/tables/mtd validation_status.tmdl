@@ -1,0 +1,118 @@
+table 'mtd validation_status'
+	lineageTag: 94201a0b-ec89-449d-a74b-4e97c2d212ac
+
+	column validation_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: cd719129-a3be-42a7-bc9d-6c60080b96d3
+		summarizeBy: none
+		sourceColumn: validation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(20)
+		lineageTag: 5631da49-4aab-4eba-a4aa-dafee21d87bd
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_item_name
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: e64639c6-6288-4459-bbee-e28332233bde
+		summarizeBy: none
+		sourceColumn: source_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_item_name
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(150)
+		lineageTag: 2435a23d-cf73-4df9-85e3-f186e79acaa4
+		summarizeBy: none
+		sourceColumn: target_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column process_stage
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 2d276606-2221-4192-9555-822111e304ea
+		summarizeBy: none
+		sourceColumn: process_stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_category
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 77a6a1de-667b-48f4-911d-c5fbb3b36630
+		summarizeBy: none
+		sourceColumn: validation_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_scope
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 3eeea42f-6872-4dc5-ab62-d616b58bf0fe
+		summarizeBy: none
+		sourceColumn: validation_scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_criteria
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(500)
+		lineageTag: 44d5fa6d-a07f-411f-a74e-561c50082929
+		summarizeBy: none
+		sourceColumn: validation_criteria
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_status
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(20)
+		lineageTag: a7a09095-a281-4ecb-8f02-80d7d36e76e7
+		summarizeBy: none
+		sourceColumn: validation_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column validation_datetime
+		dataType: dateTime
+		isNullable: false
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 76902f82-954d-4a00-980f-b994b758361b
+		summarizeBy: none
+		sourceColumn: validation_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd validation_status' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_validation_status = Source{[Schema="mtd",Item="validation_status"]}[Data]
+				in
+				    mtd_validation_status
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

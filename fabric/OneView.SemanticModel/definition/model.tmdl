@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-AU
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["sys database_firewall_rules","mtd enrich_audit","mtd enrich_control","mtd ingest_audit","mtd ingest_control","mtd serve_audit","mtd serve_control","mtd shortcut_audit","mtd transformation_config","mtd validation_config","mtd validation_status"]
+
+ref table 'sys database_firewall_rules'
+ref table 'mtd enrich_audit'
+ref table 'mtd enrich_control'
+ref table 'mtd ingest_audit'
+ref table 'mtd ingest_control'
+ref table 'mtd serve_audit'
+ref table 'mtd serve_control'
+ref table 'mtd shortcut_audit'
+ref table 'mtd transformation_config'
+ref table 'mtd validation_config'
+ref table 'mtd validation_status'
+
+ref cultureInfo en-US
+

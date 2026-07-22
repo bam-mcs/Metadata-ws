@@ -1,0 +1,119 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "PL_Insert_Validation_Status",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[mtd].[insert_validation_status_sp]",
+          "database": "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0",
+          "storedProcedureParameters": {
+            "source_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_item_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "source_type": {
+              "value": {
+                "value": "@pipeline().parameters.par_source_type",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "target_item_name": {
+              "value": {
+                "value": "@pipeline().parameters.par_target_item_name",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "validation_category": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_category",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "validation_criteria": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_criteria",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "validation_id": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_id",
+                "type": "Expression"
+              },
+              "type": "Int32"
+            },
+            "validation_scope": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_scope",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "validation_status": {
+              "value": {
+                "value": "@pipeline().parameters.par_validation_status",
+                "type": "Expression"
+              },
+              "type": "String"
+            },
+            "process_stage": {
+              "value": {
+                "value": "@pipeline().parameters.par_process_stage",
+                "type": "Expression"
+              },
+              "type": "String"
+            }
+          }
+        },
+        "externalReferences": {
+          "connection": "985414de-c98a-4c9d-b3ef-ff28bcb96adb"
+        }
+      }
+    ],
+    "parameters": {
+      "par_source_item_name": {
+        "type": "string"
+      },
+      "par_source_type": {
+        "type": "string"
+      },
+      "par_target_item_name": {
+        "type": "string"
+      },
+      "par_validation_category": {
+        "type": "string"
+      },
+      "par_validation_criteria": {
+        "type": "string"
+      },
+      "par_validation_id": {
+        "type": "int"
+      },
+      "par_validation_scope": {
+        "type": "string"
+      },
+      "par_validation_status": {
+        "type": "string"
+      },
+      "par_process_stage": {
+        "type": "string"
+      }
+    }
+  }
+}

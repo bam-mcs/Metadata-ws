@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Shortcut_Audit",
+    "description": ""
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fd61a756-2274-ac07-4448-74c8eacb41a1"
+  }
+}

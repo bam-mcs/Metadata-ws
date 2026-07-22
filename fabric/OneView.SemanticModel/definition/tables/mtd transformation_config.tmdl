@@ -1,0 +1,85 @@
+table 'mtd transformation_config'
+	lineageTag: 73e1cacb-c68d-40f5-b181-077364ef98a0
+
+	column transformation_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 49c5623c-31d7-445a-a03b-486995909e1c
+		summarizeBy: sum
+		sourceColumn: transformation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column control_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c7095e97-3746-4d72-91d1-ec6d685dede0
+		summarizeBy: none
+		sourceColumn: control_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column process_stage
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: ea34a62a-9557-4a72-b9dc-061f9846d916
+		summarizeBy: none
+		sourceColumn: process_stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column transformation_rule
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: f3f39963-f91a-409b-b600-b2cae0b08a75
+		summarizeBy: none
+		sourceColumn: transformation_rule
+
+		annotation SummarizationSetBy = Automatic
+
+	column transformation_type
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: e350a3c3-5140-4afe-b9bf-1cf6b50c4198
+		summarizeBy: none
+		sourceColumn: transformation_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column transformation_rule_criteria
+		dataType: string
+		sourceProviderType: varchar(200)
+		lineageTag: 18cbf049-6e6a-4aea-89c7-c57099143321
+		summarizeBy: none
+		sourceColumn: transformation_rule_criteria
+
+		annotation SummarizationSetBy = Automatic
+
+	column enable_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3b4886a9-65ab-4751-9f92-a0172545e688
+		summarizeBy: sum
+		sourceColumn: enable_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd transformation_config' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_transformation_config = Source{[Schema="mtd",Item="transformation_config"]}[Data]
+				in
+				    mtd_transformation_config
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,248 @@
+table 'mtd ingest_audit'
+	lineageTag: 734cada3-a452-4333-b1c1-b0a1d15165b7
+
+	measure 'Sum of files_read plus Sum of files_written' =
+			
+			SUM('mtd enrich_audit'[files_read]) + SUM('mtd enrich_audit'[files_written])
+		formatString: 0
+		lineageTag: 83ddc3df-f0b2-4ef1-9eaa-4e4ee0095669
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Sum of rows_read plus Sum of rows_written 2' =
+			
+			SUM('mtd ingest_audit'[rows_read]) + SUM('mtd ingest_audit'[rows_written])
+		formatString: 0
+		lineageTag: d9039d86-f1af-4957-8118-8a6eb97f0ca4
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Sum of data_read plus Sum of data_written' =
+			
+			SUM('mtd ingest_audit'[data_read]) + SUM('mtd ingest_audit'[data_written])
+		formatString: 0
+		lineageTag: a160119c-0b92-4f67-8a6f-02f48c2b5a16
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 609de31a-9d4f-4610-8508-68869726ab65
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 8c9eaa48-ceb1-4739-9900-9ef7670fbaad
+		summarizeBy: none
+		sourceColumn: event_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_activity_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 9c229792-2924-4cc0-b42b-2e3d8969e16b
+		summarizeBy: none
+		sourceColumn: event_activity_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 9699d08b-422e-4132-a031-a03fc7862773
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6c6f27e9-4584-4f20-acf0-f02901e761c8
+		summarizeBy: sum
+		sourceColumn: data_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0bcc5447-98ef-4ff6-ad3d-b42686f9cc9c
+		summarizeBy: sum
+		sourceColumn: data_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d2551c0c-38b5-4bf4-82b4-fb4673e28a63
+		summarizeBy: sum
+		sourceColumn: files_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ab93d5a8-a985-4017-a806-e793d6f01d52
+		summarizeBy: sum
+		sourceColumn: files_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5d2ed9ab-6b15-4fd6-ac1b-5241aa52adee
+		summarizeBy: sum
+		sourceColumn: rows_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 76124a9d-4327-4a28-9fd6-d0bce633a6a6
+		summarizeBy: sum
+		sourceColumn: rows_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_consistency_verification
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 7a87bd53-8db8-4fb7-b724-347ca0553f83
+		summarizeBy: none
+		sourceColumn: data_consistency_verification
+
+		annotation SummarizationSetBy = Automatic
+
+	column copy_duration
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 26195925-78a6-4852-b00c-95387a327008
+		summarizeBy: sum
+		sourceColumn: copy_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_start_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 6b4b52f2-5b29-42c2-a27e-655e669b1ae8
+		summarizeBy: none
+		sourceColumn: event_start_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_end_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 46fd8283-ca9c-4f15-a928-8658e74b1329
+		summarizeBy: none
+		sourceColumn: event_end_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_cutoff_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 958c9011-299b-41ac-b80b-efd1d2e1c342
+		summarizeBy: none
+		sourceColumn: source_cutoff_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_type
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: fa1a8ce8-9984-4bf1-9069-e65a1b24e97e
+		summarizeBy: none
+		sourceColumn: load_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: c9724ffe-a969-427e-998e-5f55704fa23f
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_triggered_by
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 3c312a6b-5e2a-4495-abb6-fe688dbdd2ed
+		summarizeBy: none
+		sourceColumn: event_triggered_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_details
+		dataType: string
+		sourceProviderType: varchar(1500)
+		lineageTag: 0b0d2e2d-2938-42d8-8531-6d78d2a5f713
+		summarizeBy: none
+		sourceColumn: error_details
+
+		annotation SummarizationSetBy = Automatic
+
+	column pipeline_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: 1ca9027b-e4b5-4e17-8b24-65153e738daa
+		summarizeBy: none
+		sourceColumn: pipeline_url
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd ingest_audit' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_ingest_audit = Source{[Schema="mtd",Item="ingest_audit"]}[Data]
+				in
+				    mtd_ingest_audit
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

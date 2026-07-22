@@ -1,0 +1,169 @@
+table 'mtd ingest_control'
+	lineageTag: 4878d4b5-6ec0-436b-9f78-3fdcc081483b
+
+	column control_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: dbbb8cff-c85d-4264-a0ff-97ab5e2ba35e
+		summarizeBy: sum
+		sourceColumn: control_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(20)
+		lineageTag: 8f9c41a9-a643-4fe6-8246-31a91ca7154a
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_container_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: d62d9252-621c-4040-8165-219d5d4a011f
+		summarizeBy: none
+		sourceColumn: source_container_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_folder_path
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 410030fc-23f8-49c3-80c1-ce31279c2093
+		summarizeBy: none
+		sourceColumn: source_folder_path
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_database_name
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: c3fbc9ac-8547-4b22-aaf7-0ff66815ddfd
+		summarizeBy: none
+		sourceColumn: source_database_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_schema_name
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5d3845d7-45c6-4550-829f-fecb3b73b3ac
+		summarizeBy: none
+		sourceColumn: source_schema_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_table_name
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 900153c7-49c3-45c0-b05a-36dbdf44e263
+		summarizeBy: none
+		sourceColumn: source_table_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_query
+		dataType: string
+		sourceProviderType: varchar(max)
+		lineageTag: 77207ffa-15c4-444a-b7ac-4edd79de1d18
+		summarizeBy: none
+		sourceColumn: source_query
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_column_list
+		dataType: string
+		sourceProviderType: varchar(1000)
+		lineageTag: 3e1c272b-68b2-4216-a370-370c65007bab
+		summarizeBy: none
+		sourceColumn: source_column_list
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_watermark_column
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: d75beacc-0f16-4054-8289-57f5df3fc2b7
+		summarizeBy: none
+		sourceColumn: source_watermark_column
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_cutoff_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: cc8a10e4-2b79-490d-924f-744383c8ca49
+		summarizeBy: none
+		sourceColumn: source_cutoff_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_object
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 9f539c60-e962-423e-a27b-00364b4a21fa
+		summarizeBy: none
+		sourceColumn: target_object
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_table_name
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 19a6554f-7747-444c-ac0c-d6c49731a7d5
+		summarizeBy: none
+		sourceColumn: target_table_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_type
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(100)
+		lineageTag: 6a2a17e4-9c6d-4986-bd86-54fb9d886b27
+		summarizeBy: none
+		sourceColumn: load_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column fabric_store
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(50)
+		lineageTag: e33b3c11-fa03-4ce4-88c1-1e948ae55636
+		summarizeBy: none
+		sourceColumn: fabric_store
+
+		annotation SummarizationSetBy = Automatic
+
+	column enable_flag
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 89eabad3-2ad9-4cc5-9af0-df7311b38726
+		summarizeBy: sum
+		sourceColumn: enable_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd ingest_control' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_ingest_control = Source{[Schema="mtd",Item="ingest_control"]}[Data]
+				in
+				    mtd_ingest_control
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

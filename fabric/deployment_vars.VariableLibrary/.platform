@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "VariableLibrary",
+    "displayName": "deployment_vars"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "212beff6-0143-99ab-4026-96d76c27e1cd"
+  }
+}

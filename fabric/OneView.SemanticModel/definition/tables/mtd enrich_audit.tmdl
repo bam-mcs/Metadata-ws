@@ -1,0 +1,326 @@
+table 'mtd enrich_audit'
+	lineageTag: 88733f8e-d84a-4929-a31e-906cf442d28b
+
+	measure IngestSuccess = ```
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd ingest_audit', 'mtd ingest_audit'[status] = "Success")),
+			    COUNTROWS('mtd ingest_audit'),
+			    0
+			)
+			
+			```
+		lineageTag: 36977bc5-8b43-4fe1-ada7-3599b8a5ef5d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IngestFailure = ```
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd ingest_audit', 'mtd ingest_audit'[status] = "Failure")),
+			    COUNTROWS('mtd ingest_audit'),
+			    0
+			)
+			
+			```
+		lineageTag: 267b9693-85a1-459c-bd9a-05c425d31968
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure EnrichAuditRows =
+			
+			SUM('mtd enrich_audit'[rows_read]) + SUM('mtd enrich_audit'[rows_written])
+		formatString: 0
+		lineageTag: 5c235f30-116f-41ce-bd92-40d8fd479fd0
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Sum of rows_read plus Sum of rows_written' =
+			
+			SUM('mtd enrich_audit'[rows_read]) + SUM('mtd enrich_audit'[rows_written])
+		formatString: 0
+		lineageTag: 518e8b6d-7db7-4789-a6dd-b74f93b1f0a7
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure Enrichauditfiles =
+			
+			SUM('mtd enrich_audit'[files_written]) + SUM('mtd enrich_audit'[files_read])
+		formatString: 0
+		lineageTag: 91cfbf1a-4532-4317-9bed-14cd682b01f0
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "MathematicalAddition"
+				}
+
+		changedProperty = FormatString
+
+	measure EnrichFailure =
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd enrich_audit', 'mtd enrich_audit'[status] = "Failure")),
+			    COUNTROWS('mtd enrich_audit'),
+			    0
+			)
+		lineageTag: ac1a3e64-3142-4d96-a81b-b7a8ecb0854e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure EnrichSuccess =
+			
+			DIVIDE(
+			    COUNTROWS(FILTER('mtd enrich_audit', 'mtd enrich_audit'[status] = "Success")),
+			    COUNTROWS('mtd enrich_audit'),
+			    0
+			)
+		lineageTag: 7a5d9415-7c04-40a5-9ea4-b117670617cd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure EnrichFailureDisplay = IF ( ISBLANK ( 'mtd enrich_audit'[EnrichFailure]  ), "0%", 'mtd enrich_audit'[EnrichFailure]  )
+		lineageTag: b382f37b-ff5f-4517-bc1c-4f66e4ccb9d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IngestFailureDisplay = IF ( ISBLANK ( [IngestFailure] ), "0%", [IngestFailure] )
+		lineageTag: 78ee7d6c-934f-4121-aa07-1cc60cd2aae0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column run_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 764c8b41-5857-41a4-bd1a-1910444922d7
+		summarizeBy: sum
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_type
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 1d85c7ab-5368-493f-a38b-2c9351cefb0e
+		summarizeBy: none
+		sourceColumn: source_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 06b19990-14af-4950-9b6c-9237f7da65f0
+		summarizeBy: none
+		sourceColumn: event_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_activity_run_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 8438fa69-853b-4bcf-9ca1-7c4a1ecf529f
+		summarizeBy: none
+		sourceColumn: event_activity_run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: e8a6e874-853f-4edf-a05b-4c60d4805d2c
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 94709008-b163-43a5-b08a-576f565adc3d
+		summarizeBy: sum
+		sourceColumn: data_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 149bf2d0-65c3-4e77-bc7c-8b17aaabb10c
+		summarizeBy: sum
+		sourceColumn: data_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5fc78bd0-476b-4335-a678-8bb52f4173cb
+		summarizeBy: sum
+		sourceColumn: files_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column files_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c61b11ae-3ae5-4c57-a68b-2cc872cbaffc
+		summarizeBy: sum
+		sourceColumn: files_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_read
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: daea4a8b-7199-4300-9486-105e3bddc520
+		summarizeBy: sum
+		sourceColumn: rows_read
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_written
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b34a930b-0dea-4b34-bd6b-6bc7f69abf09
+		summarizeBy: sum
+		sourceColumn: rows_written
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_consistency_verification
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: f164c71e-3162-44f4-a525-1ee0ee275c84
+		summarizeBy: none
+		sourceColumn: data_consistency_verification
+
+		annotation SummarizationSetBy = Automatic
+
+	column copy_duration
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 451cf1df-62fe-49a3-b302-6a818cd89052
+		summarizeBy: sum
+		sourceColumn: copy_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_start_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 4db79043-8083-4e79-bb10-60b10ce7d5f2
+		summarizeBy: none
+		sourceColumn: event_start_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_end_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: a160f5ee-21b1-45a5-b85a-42a7f9525411
+		summarizeBy: none
+		sourceColumn: event_end_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_cutoff_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 02de3efe-bd19-4980-8476-8c3edbf5a3a2
+		summarizeBy: none
+		sourceColumn: source_cutoff_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_type
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: fc805ff3-3313-425b-bf85-42128992849c
+		summarizeBy: none
+		sourceColumn: load_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: fc6fc534-46a4-403c-b73a-54b743eaa90b
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_triggered_by
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 32e394b3-cbf2-4830-b53d-1b99b568b96c
+		summarizeBy: none
+		sourceColumn: event_triggered_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_details
+		dataType: string
+		sourceProviderType: varchar(1500)
+		lineageTag: 5ba9da4c-b0da-4a69-8981-a1d5955848ca
+		summarizeBy: none
+		sourceColumn: error_details
+
+		annotation SummarizationSetBy = Automatic
+
+	column pipeline_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: 27bfc0b9-3ff9-48d5-a69d-3c5efd50ed69
+		summarizeBy: none
+		sourceColumn: pipeline_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column spark_monitoring_url
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: 74343742-bc55-4fbe-8569-bce56bc5707b
+		summarizeBy: none
+		sourceColumn: spark_monitoring_url
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'mtd enrich_audit' = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("qctxqcmg5x3urbyrlnarnfz524-bsawv73sureu5fmdqnpayxfu7u.database.fabric.microsoft.com", "MetadataDB-faec03d1-1d44-4a42-a0ff-fb485c9af8c0"),
+				    mtd_enrich_audit = Source{[Schema="mtd",Item="enrich_audit"]}[Data]
+				in
+				    mtd_enrich_audit
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
