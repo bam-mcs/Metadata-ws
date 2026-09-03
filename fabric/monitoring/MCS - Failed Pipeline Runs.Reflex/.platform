@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Reflex",
+    "displayName": "MCS - Failed Pipeline Runs",
+    "description": "MCS failed-pipeline alerting (provisioned)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1c91a95d-8938-b912-42bb-102815692904"
+  }
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "uniqueIdentifier": "1eb7d30a-7567-45e6-a494-21d0c800f432",
+    "payload": {
+      "name": "KQL - Semantic Model Refresh Failures",
+      "description": "Container Description",
+      "type": "kqlQueries"
+    },
+    "type": "container-v1"
+  },
+  {
+    "uniqueIdentifier": "a12c0f89-ae8c-4d3f-a507-06161fa951de",
+    "payload": {
+      "name": "Fabric item action",
+      "fabricItem": {
+        "itemId": "80a00ae3-2c53-429c-9b1a-813fd4dc8afb",
+        "workspaceId": "0913351b-e7c1-44ab-93ea-87b74fedb4cb",
+        "itemType": "FunctionSet"
+      },
+      "jobType": "Execute",
+      "parentContainer": {
+        "targetUniqueIdentifier": "1eb7d30a-7567-45e6-a494-21d0c800f432"
+      }
+    },
+    "type": "fabricItemAction-v1"
+  },
+  {
+    "uniqueIdentifier": "dba7a88e-457c-4f71-b4e1-3dcb1539020c",
+    "payload": {
+      "name": "Monitoring KQL database event",
+      "runSettings": {
+        "isStopped": false,
+        "executionIntervalInSeconds": 3600
+      },
+      "query": {
+        "queryString": "let lookback = 1h;\nlet refreshes =\n    SemanticModelLogs\n    | where Timestamp > ago(lookback)\n    | where OperationName == \"CommandEnd\"\n    | where EventText has \"refresh\"\n    | where isnotempty(ExecutingUser)\n    | where ItemName contains \"mcs_monitored\"\n    | project OperationId, EndTime = Timestamp, WorkspaceId, WorkspaceName,\n              ItemId, ItemName, ExecutingUser, DurationMs, CpuTimeMs,\n              CmdStatusCode = StatusCode, CmdLevel = Level;\nlet errs =\n    SemanticModelLogs\n    | where Timestamp > ago(lookback)\n    | where OperationName == \"Error\" or Level =~ \"Error\"\n    | summarize ErrEvents = count(),\n                ErrObjects = make_set(XmlaObjectPath, 10),\n                ErrMessages = make_set(EventText, 5)\n      by OperationId;\nlet metrics =\n    SemanticModelLogs\n    | where Timestamp > ago(lookback)\n    | where OperationName == \"ExecutionMetrics\"\n    | extend m = parse_json(EventText)\n    | project OperationId,\n              ErrorCount = toint(m.errorCount),\n              IntendedUsage = toint(m.intendedUsage),\n              PeakMemKB = tolong(m.approximatePeakMemConsumptionKB),\n              ThrottlingMs = toint(m.capacityThrottlingMs);\nrefreshes\n| join kind=leftouter errs on OperationId\n| join kind=leftouter metrics on OperationId\n| where CmdStatusCode != 0 or ErrEvents > 0 or ErrorCount > 0\n| extend RefreshTrigger = case(IntendedUsage == 1, \"Scheduled/API\",\n                               IntendedUsage == 2, \"OnDemand\",\n                               \"Other\")\n| project EndTime, WorkspaceName, ItemName, RefreshTrigger, ExecutingUser,\n          DurationMin = round(DurationMs / 60000.0, 2),\n          CmdStatusCode, ErrorCount, ThrottlingMs,\n          FailedObjects = ErrObjects, ErrorMessages = ErrMessages,\n          OperationId, ItemId, WorkspaceId\n| order by EndTime desc"
+      },
+      "eventhouseItem": {
+        "itemId": "a8e1e028-d6c8-444b-ac69-d975d2302813",
+        "workspaceId": "ff6a810c-a472-4e49-9583-835e0c5cb4fd",
+        "itemType": "KustoDatabase"
+      },
+      "queryParameters": [],
+      "metadata": {
+        "workspaceId": "ff6a810c-a472-4e49-9583-835e0c5cb4fd",
+        "querySetId": "6a0c21f2-2fc1-489f-9c59-8bdabe2862de",
+        "queryId": "10809415-b5f6-4e1a-a5d5-817ad08f5686"
+      },
+      "parentContainer": {
+        "targetUniqueIdentifier": "1eb7d30a-7567-45e6-a494-21d0c800f432"
+      }
+    },
+    "type": "kqlSource-v1"
+  },
+  {
+    "uniqueIdentifier": "b72ecfca-1682-41eb-849c-6e1765ebb00d",
+    "payload": {
+      "name": "Monitoring KQL database event",
+      "parentContainer": {
+        "targetUniqueIdentifier": "1eb7d30a-7567-45e6-a494-21d0c800f432"
+      },
+      "definition": {
+        "type": "Event",
+        "instance": "{\"steps\": [{\"id\": \"b8cf09d8-2510-44a1-81ce-47176ca17426\", \"name\": \"SourceEventStep\", \"rows\": [{\"arguments\": [{\"name\": \"entityId\", \"type\": \"string\", \"value\": \"dba7a88e-457c-4f71-b4e1-3dcb1539020c\"}], \"kind\": \"SourceReference\", \"name\": \"SourceSelector\"}]}], \"templateId\": \"SourceEvent\", \"templateVersion\": \"1.3.0\"}"
+      }
+    },
+    "type": "timeSeriesView-v1"
+  },
+  {
+    "uniqueIdentifier": "8efe82fe-c4a6-4d36-b7b5-10d0e778e6d6",
+    "payload": {
+      "name": "MCS - Semantic Model Refresh Failures",
+      "parentContainer": {
+        "targetUniqueIdentifier": "1eb7d30a-7567-45e6-a494-21d0c800f432"
+      },
+      "definition": {
+        "type": "Rule",
+        "instance": "{\"templateId\": \"EventTrigger\", \"templateVersion\": \"1.3.0\", \"steps\": [{\"name\": \"FieldsDefaultsStep\", \"id\": \"fd220e5b-76dc-4f6d-8930-01ef9fadcf5d\", \"rows\": [{\"name\": \"EventSelector\", \"kind\": \"Event\", \"arguments\": [{\"kind\": \"EventReference\", \"type\": \"complex\", \"arguments\": [{\"name\": \"entityId\", \"type\": \"string\", \"value\": \"b72ecfca-1682-41eb-849c-6e1765ebb00d\"}], \"name\": \"event\"}]}]}, {\"name\": \"EventDetectStep\", \"id\": \"a886648f-b1a9-4a99-a190-f6bc95e230a9\", \"rows\": [{\"name\": \"OnEveryValue\", \"kind\": \"OnEveryValue\", \"arguments\": []}]}, {\"name\": \"ActStep\", \"id\": \"e0d2ae71-1803-4fd2-a3a2-bb48b1604c14\", \"rows\": [{\"name\": \"FabricItemBinding\", \"kind\": \"FabricItemInvocation\", \"arguments\": [{\"name\": \"fabricJobConnectionDocumentId\", \"type\": \"string\", \"value\": \"a12c0f89-ae8c-4d3f-a507-06161fa951de\"}, {\"name\": \"parameters\", \"type\": \"array\", \"values\": [{\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"alertName\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"MCS - Semantic Model Refresh Failures\"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"workspaceName\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"\\u200b\"}, {\"kind\": \"EventFieldReference\", \"type\": \"complexReference\", \"arguments\": [{\"name\": \"fieldName\", \"type\": \"string\", \"value\": \"WorkspaceName\"}]}, {\"type\": \"string\", \"value\": \" \"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"workspaceId\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"\\u200b\"}, {\"kind\": \"EventFieldReference\", \"type\": \"complexReference\", \"arguments\": [{\"name\": \"fieldName\", \"type\": \"string\", \"value\": \"WorkspaceId\"}]}, {\"type\": \"string\", \"value\": \" \"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"itemName\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"\\u200b\"}, {\"kind\": \"EventFieldReference\", \"type\": \"complexReference\", \"arguments\": [{\"name\": \"fieldName\", \"type\": \"string\", \"value\": \"ItemName\"}]}, {\"type\": \"string\", \"value\": \" \"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"itemId\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"\\u200b\"}, {\"kind\": \"EventFieldReference\", \"type\": \"complexReference\", \"arguments\": [{\"name\": \"fieldName\", \"type\": \"string\", \"value\": \"ItemId\"}]}, {\"type\": \"string\", \"value\": \" \"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"errorMessages\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"type\": \"string\", \"value\": \"\\u200b\"}, {\"kind\": \"EventFieldReference\", \"type\": \"complexReference\", \"arguments\": [{\"name\": \"fieldName\", \"type\": \"string\", \"value\": \"ErrorMessages\"}]}, {\"type\": \"string\", \"value\": \" \"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}, {\"kind\": \"FabricItemParameter\", \"type\": \"complex\", \"arguments\": [{\"name\": \"parameterName\", \"type\": \"string\", \"value\": \"webhookUrl\"}, {\"name\": \"parameterValue\", \"type\": \"complexArray\", \"values\": [{\"name\": \"string\", \"type\": \"string\", \"value\": \"https://mcstest-ops-fabric-alerts-receiver.azurewebsites.net/api/mcs-ops-fabric-alerts-receiver\"}]}, {\"name\": \"parameterType\", \"type\": \"string\", \"value\": \"String\"}]}]}, {\"name\": \"additionalInformation\", \"type\": \"array\", \"values\": []}, {\"name\": \"workspaceId\", \"type\": \"string\", \"value\": \"0913351b-e7c1-44ab-93ea-87b74fedb4cb\"}, {\"name\": \"itemId\", \"type\": \"string\", \"value\": \"80a00ae3-2c53-429c-9b1a-813fd4dc8afb\"}, {\"name\": \"itemType\", \"type\": \"string\", \"value\": \"UserDataFunctions\"}, {\"name\": \"jobType\", \"type\": \"string\", \"value\": \"Execute\"}, {\"name\": \"subitemId\", \"type\": \"string\", \"value\": \"send_webhook_semantic_model_refresh_failure\"}]}]}]}",
+        "settings": {
+          "shouldRun": true,
+          "shouldApplyRuleOnUpdate": true
+        }
+      }
+    },
+    "type": "timeSeriesView-v1"
+  }
+]

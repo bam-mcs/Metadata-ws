@@ -6,7 +6,8 @@
         "typeProperties": {
           "dataBuildToolJobId": "d2056dad-eb3b-8be4-44a3-c122c172c8e8",
           "workspaceId": "00000000-0000-0000-0000-000000000000",
-          "threads": 4
+          "threads": 4,
+          "operation": "build"
         },
         "externalReferences": {
           "connection": "d5f7a2f9-cfb7-4fb0-8223-0e5f5fc6efd1"
